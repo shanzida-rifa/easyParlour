@@ -6,6 +6,8 @@ const services = [
   { id: '2', name: 'Facial' },
   { id: '3', name: 'Pedicure' },
   { id: '4', name: 'Manicure' },
+  { id: '5', name: 'Hair Cutting' },
+  { id: '6', name: 'Massage' },
 ];
 
 export default function ServicesMenu() {
