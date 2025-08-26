@@ -70,11 +70,34 @@ export default function ServiceExpandScreen() {
 
       {/* Sections */}
       <Text style={styles.heading}>Near Me</Text>
-      <SectionBox />
+      <SectionBox
+        images={[
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTk6wBUwH_QnLGfWOxJTI_Qpt31vsX6z4eO6Q&s',
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcdGJuRxUaEOPUgNL-xQln7wqR5y3EV1OWiA&s',
+          'https://picsum.photos/400/200?random=2',
+        ]}
+        onPress={index => console.log('Near Me pressed, image:', index)}
+      />
+
       <Text style={styles.heading}>Popular</Text>
-      <SectionBox />
+      <SectionBox
+        images={[
+          'https://www.tbsnews.net/sites/default/files/styles/big_2/public/images/2025/01/12/rouge_makeover_studio_.png',
+          'https://content.jdmagicbox.com/comp/def_content/salons/default-salons-4.jpg',
+          'https://images.pexels.com/photos/6954845/pexels-photo-6954845.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+        ]}
+        onPress={index => console.log('Popular pressed, image:', index)}
+      />
+
       <Text style={styles.heading}>Offers</Text>
-      <SectionBox />
+      <SectionBox
+        images={[
+          'https://img.freepik.com/free-psd/special-offer-creative-sale-banner-design_47987-13883.jpg?semt=ais_hybrid&w=740&q=80',
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFo0gh_ZGUhLnUU_g5xV1oF1x2ZIYIclkKSA&s',
+          'https://picsum.photos/400/200?random=6',
+        ]}
+        onPress={index => console.log('Offers pressed, image:', index)}
+      />
     </ScrollView>
   );
 }

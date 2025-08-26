@@ -6,8 +6,8 @@ const { width } = Dimensions.get('window');
 
 const images = [
   'https://www.gettimely.com/media/a1hbvvl3/timely-blog-8-salon-ideas-spa-salons.jpg',
-  'https://via.placeholder.com/400x200.png',
-  'https://via.placeholder.com/400x200.png',
+  'https://i.pinimg.com/474x/29/e8/b2/29e8b2661b22bb5710413d8e08c0387a.jpg',
+  'https://media.istockphoto.com/id/1856117770/photo/modern-beauty-salon.jpg?s=612x612&w=0&k=20&c=dVZtsePk2pgbqDXwVkMm-yIw5imnZ2rnkAruR7zf8EA=',
 ];
 
 export default function ImageSlider() {

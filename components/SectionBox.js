@@ -1,16 +1,58 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import {
+  View,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+} from 'react-native';
 
-export default function SectionBox() {
-  return <View style={styles.box}></View>;
+const { width } = Dimensions.get('window');
+
+export default function SectionBox({ images = [], onPress }) {
+  return (
+    <View style={styles.container}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        pagingEnabled
+      >
+        {images.map((img, index) => (
+          <TouchableOpacity
+            key={index}
+            style={styles.box}
+            activeOpacity={0.8}
+            onPress={() => onPress && onPress(index)}
+          >
+            <Image source={{ uri: img }} style={styles.image} />
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 20,
+  },
   box: {
+    width: width - 32, // full width with margin
     height: 150,
     marginHorizontal: 16,
-    backgroundColor: '#eee',
     borderRadius: 8,
-    marginBottom: 20,
+    overflow: 'hidden',
+    backgroundColor: '#eee',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
   },
 });
