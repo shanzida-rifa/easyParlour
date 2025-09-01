@@ -97,70 +97,131 @@ export default function SearchResultsScreen({ route }) {
     }
   };
 
+  // const renderSearchItem = ({ item }) => (
+  //   <View style={styles.resultItem}>
+  //     {/* Image with rating and favorite icon overlay */}
+  //     <View style={styles.imageContainer}>
+  //       <Image source={item.image} style={styles.resultImage} />
+
+  //       {/* Rating badge in top left */}
+  //       <View style={styles.ratingBadge}>
+  //         <FontAwesome name="star" size={12} color="#FFD700" />
+  //         <Text style={styles.ratingText}>
+  //           {' '}
+  //           {item.rating} ({item.reviews})
+  //         </Text>
+  //       </View>
+
+  //       {/* Favorite heart in top right */}
+  //       <TouchableOpacity
+  //         style={styles.favoriteButton}
+  //         onPress={() => toggleFavorite(item.id)}
+  //       >
+  //         <Icon
+  //           name={favorites[item.id] ? 'heart' : 'heart-outline'}
+  //           size={24}
+  //           color={favorites[item.id] ? '#E91E63' : '#fff'}
+  //         />
+  //       </TouchableOpacity>
+  //     </View>
+
+  //     {/* Content below the image */}
+  //     <View style={styles.resultContent}>
+  //       <Text style={styles.title}>{item.title}</Text>
+
+  //       {item.badge && <Text style={styles.badge}>{item.badge}</Text>}
+
+  //       <Text style={styles.services}>{item.services}</Text>
+  //       {/* Share button in top right */}
+  //       <TouchableOpacity
+  //         style={styles.shareButton}
+  //         onPress={() => shareBusiness(item)}
+  //       >
+  //         <Icon name="share-social-outline" size={20} color="#555" />
+  //       </TouchableOpacity>
+  //       {/* Horizontal line */}
+  //       <View style={styles.divider} />
+  //       {/* Address with location icon */}
+  //       <View style={styles.detailRow}>
+  //         <MaterialIcons name="location-on" size={14} color="#666" />
+  //         <Text style={styles.address}> {item.address}</Text>
+  //       </View>
+
+  //       {/* Details with clock icon */}
+  //       <View style={styles.detailRow}>
+  //         <Icon name="time-outline" size={14} color="#666" />
+  //         <Text style={styles.details}> {item.details}</Text>
+  //       </View>
+
+  //       {/* Rating at the bottom */}
+  //       {/* <View style={styles.ratingContainerBottom}>
+  //         <Text style={styles.ratingText}>
+  //           {item.rating} ({item.reviews})
+  //         </Text>
+  //       </View> */}
+  //     </View>
+  //   </View>
+  // );
+
+  // Inside renderSearchItem
   const renderSearchItem = ({ item }) => (
-    <View style={styles.resultItem}>
-      {/* Image with rating and favorite icon overlay */}
-      <View style={styles.imageContainer}>
-        <Image source={item.image} style={styles.resultImage} />
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={() => navigation.navigate('ParlourProfile', { parlour: item })}
+    >
+      <View style={styles.resultItem}>
+        {/* Image with rating and favorite icon overlay */}
+        <View style={styles.imageContainer}>
+          <Image source={item.image} style={styles.resultImage} />
 
-        {/* Rating badge in top left */}
-        <View style={styles.ratingBadge}>
-          <FontAwesome name="star" size={12} color="#FFD700" />
-          <Text style={styles.ratingText}>
-            {' '}
-            {item.rating} ({item.reviews})
-          </Text>
+          {/* Rating badge */}
+          <View style={styles.ratingBadge}>
+            <FontAwesome name="star" size={12} color="#FFD700" />
+            <Text style={styles.ratingText}>
+              {item.rating} ({item.reviews})
+            </Text>
+          </View>
+
+          {/* Favorite heart */}
+          <TouchableOpacity
+            style={styles.favoriteButton}
+            onPress={() => toggleFavorite(item.id)}
+          >
+            <Icon
+              name={favorites[item.id] ? 'heart' : 'heart-outline'}
+              size={24}
+              color={favorites[item.id] ? '#E91E63' : '#fff'}
+            />
+          </TouchableOpacity>
         </View>
 
-        {/* Favorite heart in top right */}
-        <TouchableOpacity
-          style={styles.favoriteButton}
-          onPress={() => toggleFavorite(item.id)}
-        >
-          <Icon
-            name={favorites[item.id] ? 'heart' : 'heart-outline'}
-            size={24}
-            color={favorites[item.id] ? '#E91E63' : '#fff'}
-          />
-        </TouchableOpacity>
+        {/* Content */}
+        <View style={styles.resultContent}>
+          <Text style={styles.title}>{item.title}</Text>
+          {item.badge && <Text style={styles.badge}>{item.badge}</Text>}
+          <Text style={styles.services}>{item.services}</Text>
+
+          <TouchableOpacity
+            style={styles.shareButton}
+            onPress={() => shareBusiness(item)}
+          >
+            <Icon name="share-social-outline" size={20} color="#555" />
+          </TouchableOpacity>
+
+          <View style={styles.divider} />
+
+          <View style={styles.detailRow}>
+            <MaterialIcons name="location-on" size={14} color="#666" />
+            <Text style={styles.address}> {item.address}</Text>
+          </View>
+
+          <View style={styles.detailRow}>
+            <Icon name="time-outline" size={14} color="#666" />
+            <Text style={styles.details}> {item.details}</Text>
+          </View>
+        </View>
       </View>
-
-      {/* Content below the image */}
-      <View style={styles.resultContent}>
-        <Text style={styles.title}>{item.title}</Text>
-
-        {item.badge && <Text style={styles.badge}>{item.badge}</Text>}
-
-        <Text style={styles.services}>{item.services}</Text>
-        {/* Share button in top right */}
-        <TouchableOpacity
-          style={styles.shareButton}
-          onPress={() => shareBusiness(item)}
-        >
-          <Icon name="share-social-outline" size={20} color="#555" />
-        </TouchableOpacity>
-        {/* Horizontal line */}
-        <View style={styles.divider} />
-        {/* Address with location icon */}
-        <View style={styles.detailRow}>
-          <MaterialIcons name="location-on" size={14} color="#666" />
-          <Text style={styles.address}> {item.address}</Text>
-        </View>
-
-        {/* Details with clock icon */}
-        <View style={styles.detailRow}>
-          <Icon name="time-outline" size={14} color="#666" />
-          <Text style={styles.details}> {item.details}</Text>
-        </View>
-
-        {/* Rating at the bottom */}
-        {/* <View style={styles.ratingContainerBottom}>
-          <Text style={styles.ratingText}>
-            {item.rating} ({item.reviews})
-          </Text>
-        </View> */}
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
