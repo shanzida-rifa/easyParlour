@@ -32,7 +32,7 @@ export default function HomeScreen({ navigation }) {
         <Text style={styles.btnText}>Go to Home-service-expand</Text>
       </TouchableOpacity>
       <BookingCart />
-      <BottomTabs />
+      {/* <BottomTabs /> */}
     </SafeAreaView>
   );
 }

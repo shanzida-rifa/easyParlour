@@ -1,41 +1,43 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const tabs = [
-  { id: 'home', label: 'Home', icon: 'home' },
-  { id: 'bookings', label: 'Bookings', icon: 'calendar-outline' },
-  { id: 'offers', label: 'Offers', icon: 'pricetag-outline' },
-  { id: 'saved', label: 'Saved', icon: 'heart-outline' },
-  { id: 'reels', label: 'Reels', icon: 'play-circle-outline' },
+  { id: 'Home', label: 'Home', icon: 'home' },
+  { id: 'Bookings', label: 'Bookings', icon: 'calendar-outline' },
+  { id: 'Offers', label: 'Offers', icon: 'pricetag-outline' },
+  { id: 'Saved', label: 'Saved', icon: 'heart-outline' },
+  { id: 'Reels', label: 'Reels', icon: 'play-circle-outline' },
 ];
 
 export default function BottomTabs() {
-  const [active, setActive] = useState('home');
+  const navigation = useNavigation();
+  const route = useRoute(); // current active screen
 
   return (
     <View style={styles.container}>
-      {tabs.map(t => (
-        <TouchableOpacity
-          key={t.id}
-          onPress={() => setActive(t.id)}
-          style={styles.tab}
-        >
-          <Ionicons
-            name={t.icon}
-            size={22}
-            color={active === t.id ? 'black' : 'gray'}
-          />
-          <Text
-            style={[
-              styles.label,
-              { color: active === t.id ? 'black' : 'gray' },
-            ]}
+      {tabs.map(t => {
+        const isActive = route.name === t.id; // check route
+        return (
+          <TouchableOpacity
+            key={t.id}
+            onPress={() => navigation.navigate(t.id)}
+            style={styles.tab}
           >
-            {t.label}
-          </Text>
-        </TouchableOpacity>
-      ))}
+            <Ionicons
+              name={t.icon}
+              size={22}
+              color={isActive ? 'black' : 'gray'} // ✅ use route.name
+            />
+            <Text
+              style={[styles.label, { color: isActive ? 'black' : 'gray' }]}
+            >
+              {t.label}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 }

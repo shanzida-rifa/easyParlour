@@ -17,7 +17,7 @@ export default function LoginScreen({ navigation }) {
 
   const [rememberMe, setRememberMe] = useState(false);
 
-  const validUsername = 'rifa123'; // hardcoded username
+  const validUsername = 'easy123'; // hardcoded username
 
   const validPassword = '12345'; // hardcoded password
 
@@ -189,6 +189,7 @@ const styles = StyleSheet.create({
     height: 45,
     width: '100%',
     marginBottom: 12,
+    color: 'black',
   },
   input: { flex: 1 },
 
