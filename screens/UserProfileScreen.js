@@ -10,6 +10,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import SearchBar from '../components/SearchBar';
 
 export default function UserProfileScreen({ navigation }) {
   const handleLogout = () => {
@@ -34,12 +35,16 @@ export default function UserProfileScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Top Bar */}
+      {/* 🔹 Top Bar */}
       <View style={styles.topBar}>
-        <View style={styles.searchBar}>
-          <Ionicons name="search" size={20} color="#555" />
-          <Text style={styles.searchText}>Search</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#000" />
+        </TouchableOpacity>
+
+        <View style={{ flex: 1, marginHorizontal: 10 }}>
+          <SearchBar />
         </View>
+
         <TouchableOpacity>
           <Ionicons name="menu" size={28} color="#000" />
         </TouchableOpacity>
@@ -68,9 +73,13 @@ export default function UserProfileScreen({ navigation }) {
           <View style={styles.side}>
             <Text style={styles.liveText}>● Live</Text>
             <Text style={styles.goldText}>Gold Membership</Text>
-            <View style={styles.verifiedBtn}>
-              <Text style={{ color: '#555' }}>Verified</Text>
-            </View>
+
+            <TouchableOpacity
+              style={styles.verifyBtn}
+              onPress={() => navigation.navigate('VerifyProfile')}
+            >
+              <Text style={{ color: '#fff', fontWeight: '600' }}>Verify</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -112,9 +121,11 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   topBar: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
   },
   searchBar: {
     flexDirection: 'row',
@@ -140,6 +151,15 @@ const styles = StyleSheet.create({
   side: { alignItems: 'flex-end' },
   liveText: { fontSize: 14, color: 'green', marginBottom: 4 },
   goldText: { fontSize: 13, color: '#999' },
+  verifyBtn: {
+    backgroundColor: '#007bff', // Standard blue
+    borderRadius: 15,
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+    marginTop: 6,
+    alignItems: 'center',
+  },
+
   verifiedBtn: {
     borderWidth: 1,
     borderColor: '#aaa',

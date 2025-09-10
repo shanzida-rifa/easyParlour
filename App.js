@@ -12,6 +12,7 @@ import ServiceExpandScreen from './ServiceExpandScreen';
 import SearchResultsScreen from './screens/SearchResultsScreen';
 import ParlourProfileScreen from './screens/ParlourProfileScreen';
 import ServiceDetails from './screens/ServiceDetails';
+import VerifyProfileScreen from './screens/VerifyProfileScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainLayout from './MainLayout';
 import UserProfileScreen from './screens/UserProfileScreen';
@@ -52,6 +53,7 @@ export default function App() {
         <Stack.Screen name="SearchResults" component={SearchResultsScreen} />
         <Stack.Screen name="ParlourProfile" component={ParlourProfileScreen} />
         <Stack.Screen name="ServiceDetails" component={ServiceDetails} />
+        <Stack.Screen name="VerifyProfile" component={VerifyProfileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
