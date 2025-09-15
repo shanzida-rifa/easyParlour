@@ -35,7 +35,7 @@ export default function Header() {
         </TouchableOpacity> */}
 
         {/* Notifications */}
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
           <Ionicons name="notifications-outline" size={22} />
           <View style={styles.badge} />
         </TouchableOpacity>

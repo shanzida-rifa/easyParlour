@@ -21,11 +21,11 @@ export default function UserProfileScreen({ navigation }) {
     { id: 1, label: 'My Plan' },
     { id: 2, label: 'My Interest' },
     { id: 3, label: 'Plus membership' },
-    { id: 4, label: 'My rating' },
+    { id: 4, label: 'My rating', route: 'MyRating' },
     { id: 5, label: 'Manage addresses' },
     { id: 6, label: 'Verified profile' },
     { id: 7, label: 'Messages' },
-    { id: 8, label: 'Rewards' },
+    { id: 8, label: 'Rewards', route: 'Rewards' },
     { id: 9, label: 'Referral' },
     { id: 10, label: 'Vouchers' },
     { id: 11, label: 'Online Payment' },
@@ -102,7 +102,11 @@ export default function UserProfileScreen({ navigation }) {
 
         {/* Menu Items */}
         {menuItems.map(item => (
-          <TouchableOpacity key={item.id} style={styles.menuRow}>
+          <TouchableOpacity
+            key={item.id}
+            style={styles.menuRow}
+            onPress={() => item.route && navigation.navigate(item.route)}
+          >
             <Text style={styles.menuText}>{item.label}</Text>
             <MaterialIcons name="chevron-right" size={24} color="#aaa" />
           </TouchableOpacity>
