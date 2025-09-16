@@ -171,12 +171,21 @@ export default function ParlourProfileScreen({ route, navigation }) {
 
   const renderCategoryCard = ({ item }) => (
     <View style={styles.categoryCard}>
-      <Image source={item.image} style={styles.categoryImage} />
+      <Image
+        source={item.image}
+        style={styles.categoryImage}
+        resizeMode="cover"
+      />
       <Text style={styles.serviceName}>{item.name}</Text>
       <Text style={styles.servicePrice}>${item.price}</Text>
       <TouchableOpacity
         style={styles.addButton}
-        onPress={() => addToCart(item)}
+        onPress={() =>
+          navigation.navigate('ServiceDetails', {
+            service: item,
+            parlour: parlour,
+          })
+        }
       >
         <Text style={styles.addButtonText}>ADD</Text>
       </TouchableOpacity>
@@ -192,7 +201,12 @@ export default function ParlourProfileScreen({ route, navigation }) {
       </View>
       <TouchableOpacity
         style={styles.addButton}
-        onPress={() => addToCart(item)}
+        onPress={() =>
+          navigation.navigate('ServiceDetails', {
+            service: item,
+            parlour: parlour,
+          })
+        }
       >
         <Text style={styles.addButtonText}>ADD</Text>
       </TouchableOpacity>
@@ -406,7 +420,11 @@ const styles = StyleSheet.create({
   askButtonText: { fontSize: 14 },
 
   // Categories
-  categoryTabs: { paddingHorizontal: 8, marginVertical: 10 },
+  categoryTabs: {
+    paddingHorizontal: 8,
+    marginVertical: 10,
+  },
+
   categoryTab: {
     paddingVertical: 8,
     paddingHorizontal: 14,
@@ -428,7 +446,11 @@ const styles = StyleSheet.create({
     color: '#000',
   },
 
-  categoryList: { paddingHorizontal: 10, paddingBottom: 20 },
+  categoryList: {
+    paddingHorizontal: 10,
+    paddingBottom: 20,
+  },
+
   categoryCard: {
     flex: 1,
     margin: 6,
@@ -436,8 +458,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     alignItems: 'center',
+    flexWrap: 'wrap',
   },
-  categoryImage: { width: 70, height: 70, borderRadius: 8, marginBottom: 6 },
+  categoryImage: {
+    width: 70,
+    height: 70,
+    borderRadius: 8,
+    marginBottom: 6,
+  },
 
   // Services bottom
   services: { padding: 16 },

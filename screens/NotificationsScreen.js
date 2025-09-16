@@ -8,8 +8,12 @@ import {
   Modal,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
+import BottomTabs from '../components/BottomTabs'; // adjust path if needed
 
 export default function NotificationsScreen() {
+  const navigation = useNavigation();
   const [showCompletionPopup, setShowCompletionPopup] = useState(false);
   const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
 
@@ -28,7 +32,15 @@ export default function NotificationsScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Notifications</Text>
+      {/* 🔙 Back Arrow + Title */}
+      <View style={styles.headerRow}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.header}>Notifications</Text>
+      </View>
+
+      {/* 🔔 Notifications List */}
       <FlatList
         data={notifications}
         keyExtractor={item => item.id}
@@ -42,9 +54,13 @@ export default function NotificationsScreen() {
             <Text style={styles.link}>Approve Completion </Text>
           </TouchableOpacity>
         )}
+        contentContainerStyle={{ paddingBottom: 80 }} // space for bottom tabs
       />
 
-      {/* First Popup */}
+      {/* ✅ Bottom Tabs */}
+      <BottomTabs />
+
+      {/* 🔽 First Popup */}
       <Modal visible={showCompletionPopup} transparent animationType="fade">
         <View style={styles.modalOverlay}>
           <View style={styles.popup}>
@@ -74,7 +90,7 @@ export default function NotificationsScreen() {
         </View>
       </Modal>
 
-      {/* Second Popup */}
+      {/* 🔽 Second Popup */}
       <Modal visible={showFeedbackPopup} transparent animationType="fade">
         <View style={styles.modalOverlay}>
           <View style={styles.popup}>
@@ -84,13 +100,7 @@ export default function NotificationsScreen() {
               your opinion. And rate the expert.
             </Text>
             {/* Stars */}
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                marginVertical: 10,
-              }}
-            >
+            <View style={styles.starsRow}>
               {Array.from({ length: 5 }).map((_, i) => (
                 <Text key={i} style={{ fontSize: 28, marginHorizontal: 2 }}>
                   ⭐
@@ -101,13 +111,7 @@ export default function NotificationsScreen() {
             <View style={styles.feedbackBox}>
               <Text style={{ color: '#aaa' }}>Write Feedback Here</Text>
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginTop: 15,
-              }}
-            >
+            <View style={styles.feedbackActions}>
               <TouchableOpacity
                 style={styles.buttonOutline}
                 onPress={() => setShowFeedbackPopup(false)}
@@ -129,13 +133,23 @@ export default function NotificationsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 16 },
-  header: { fontSize: 20, fontWeight: '600', marginBottom: 10 },
+  container: { flex: 1, backgroundColor: '#fff' },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+  },
+  header: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginLeft: 10,
+  },
   notificationCard: {
     padding: 16,
     backgroundColor: '#f9f9f9',
     borderRadius: 12,
     marginBottom: 10,
+    marginHorizontal: 16,
   },
   title: { fontWeight: '700', fontSize: 16, marginBottom: 4 },
   message: { fontSize: 14, color: '#555' },
@@ -181,5 +195,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     minHeight: 60,
     marginTop: 10,
+  },
+  starsRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 10,
+  },
+  feedbackActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 15,
   },
 });

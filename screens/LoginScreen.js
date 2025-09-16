@@ -26,7 +26,7 @@ export default function LoginScreen({ navigation }) {
       username.trim().toLowerCase() === validUsername &&
       password === validPassword
     ) {
-      navigation.replace('Home');
+      navigation.replace('LocationAccess');
     } else {
       Alert.alert('Error', 'Wrong username or password.');
     }
