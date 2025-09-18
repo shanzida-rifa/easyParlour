@@ -23,6 +23,7 @@ import MyRatingScreen from './screens/MyRatingScreen';
 import Notifications from './screens/NotificationsScreen';
 import ServiceDetailsScreen from './screens/ServiceDetailsScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
+import ConfirmOrderScreen from './screens/ConfirmOrderScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -84,6 +85,7 @@ export default function App() {
             component={ServiceDetailsScreen}
           />
           <Stack.Screen name="Checkout" component={CheckoutScreen} />
+          <Stack.Screen name="ConfirmOrder" component={ConfirmOrderScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </CartProvider>
