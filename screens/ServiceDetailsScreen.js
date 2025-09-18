@@ -11,10 +11,13 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchBar from '../components/SearchBar';
+import { useCart } from '../components/CartContext';
+import UserProfileScreen from './UserProfileScreen';
 
 const { width } = Dimensions.get('window');
 
 export default function ServiceDetailsScreen({ route, navigation }) {
+  const { addToCart } = useCart();
   const { service, parlour } = route.params;
   const [productQuantity, setProductQuantity] = useState(1);
   const [serviceQuantity, setServiceQuantity] = useState(1);
@@ -127,6 +130,36 @@ export default function ServiceDetailsScreen({ route, navigation }) {
     );
   };
 
+  const addToCartHandler = () => {
+    const newItem = {
+      id: service.id,
+      name: service.name,
+      productPrice: service.price, // Base product price
+      servicePrice: service.price + 50, // Service price (example)
+      quantity: productQuantity + serviceQuantity,
+      price: calculateTotal(),
+      parlour: parlour.name,
+      image: service.image,
+    };
+    addToCart(newItem);
+    navigation.navigate('Checkout', {
+      profile: {
+        name: 'Prabir', // Replace with user data from profile context / API
+        address: 'Bashundhara,Dhaka-1210',
+        phone: '01719245215',
+      },
+      service: newItem,
+      // service: {
+      //   id: service.id,
+      //   name: service.name,
+      //   productPrice: service.price,
+      //   serviceCharge: 50, // fixed service charge
+      //   image: service.image || null,
+      //   quantity: 1, // default
+      // },
+    });
+  };
+
   const decreaseVariationServiceQty = id => {
     setVariations(prev =>
       prev.map(item =>
@@ -187,10 +220,10 @@ export default function ServiceDetailsScreen({ route, navigation }) {
     return productTotal + serviceTotal + variationsTotal + addOnsTotal;
   };
 
-  const addToCart = () => {
-    // Add to cart logic here
-    navigation.goBack();
-  };
+  // const addToCart = () => {
+  //   // Add to cart logic here
+  //   navigation.goBack();
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -511,7 +544,10 @@ export default function ServiceDetailsScreen({ route, navigation }) {
             {productQuantity + serviceQuantity} Item
           </Text>
         </View>
-        <TouchableOpacity style={styles.addToCartButton} onPress={addToCart}>
+        <TouchableOpacity
+          style={styles.addToCartButton}
+          onPress={addToCartHandler}
+        >
           <Text style={styles.addToCartText}>
             ADD TO CART ${calculateTotal()}
           </Text>
