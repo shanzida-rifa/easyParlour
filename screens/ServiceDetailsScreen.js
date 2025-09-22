@@ -131,15 +131,31 @@ export default function ServiceDetailsScreen({ route, navigation }) {
   };
 
   const addToCartHandler = () => {
+    const selectedVariations = variations
+      .filter(v => v.selected)
+      .map(v => ({
+        id: v.id,
+        name: v.name,
+        price: v.productPrice * v.productQty + v.servicePrice * v.serviceQty,
+      }));
+    const selectedAddOns = addOns
+      .filter(a => a.selected)
+      .map(a => ({
+        id: a.id,
+        name: a.name,
+        price: a.price * a.qty,
+      }));
     const newItem = {
       id: service.id,
       name: service.name,
       productPrice: service.price, // Base product price
-      servicePrice: service.price + 50, // Service price (example)
+      servicePrice: service.serviceCharge || 0, // Service price (example)
       quantity: productQuantity + serviceQuantity,
       price: calculateTotal(),
       parlour: parlour.name,
       image: service.image,
+      variations: selectedVariations, // ✅ send variations
+      addons: selectedAddOns, // ✅ send add-ons
     };
     addToCart(newItem);
     navigation.navigate('Checkout', {

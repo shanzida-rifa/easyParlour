@@ -27,7 +27,19 @@ export default function CheckoutScreen({ navigation }) {
   const productPrice = service?.productPrice || 0;
   const serviceCharge = service?.serviceCharge || 0;
 
-  const subtotal = (productPrice + serviceCharge) * quantity;
+  // variations and addons (default empty array if not passed)
+  const variations = service?.variations || [];
+  const addons = service?.addons || [];
+
+  // sum their prices
+  const variationsTotal = variations.reduce(
+    (sum, v) => sum + (v.price || 0),
+    0,
+  );
+  const addonsTotal = addons.reduce((sum, a) => sum + (a.price || 0), 0);
+
+  const subtotal =
+    productPrice * quantity + serviceCharge + variationsTotal + addonsTotal;
   const platformFee = 5;
   const vatTax = 10;
   const deliveryFee = 5;
@@ -97,6 +109,30 @@ export default function CheckoutScreen({ navigation }) {
                     <Text style={styles.qtyText}>+</Text>
                   </TouchableOpacity>
                 </View>
+
+                {/* Variations */}
+                {variations.length > 0 && (
+                  <View style={{ marginTop: 8 }}>
+                    <Text style={{ fontWeight: '600' }}>Variations:</Text>
+                    {variations.map((v, i) => (
+                      <Text key={i}>
+                        {v.name} - ${v.price}
+                      </Text>
+                    ))}
+                  </View>
+                )}
+
+                {/* Add-ons */}
+                {addons.length > 0 && (
+                  <View style={{ marginTop: 8 }}>
+                    <Text style={{ fontWeight: '600' }}>Add-ons:</Text>
+                    {addons.map((a, i) => (
+                      <Text key={i}>
+                        {a.name} - ${a.price}
+                      </Text>
+                    ))}
+                  </View>
+                )}
 
                 <Text style={styles.total}>Subtotal: ${subtotal}</Text>
               </View>

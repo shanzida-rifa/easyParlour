@@ -24,6 +24,7 @@ import Notifications from './screens/NotificationsScreen';
 import ServiceDetailsScreen from './screens/ServiceDetailsScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
 import ConfirmOrderScreen from './screens/ConfirmOrderScreen';
+import TrackingScreen from './screens/TrackingScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -86,6 +87,7 @@ export default function App() {
           />
           <Stack.Screen name="Checkout" component={CheckoutScreen} />
           <Stack.Screen name="ConfirmOrder" component={ConfirmOrderScreen} />
+          <Stack.Screen name="Tracking" component={TrackingScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </CartProvider>

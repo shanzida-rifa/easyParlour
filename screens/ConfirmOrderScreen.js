@@ -90,7 +90,16 @@ export default function ConfirmOrderScreen() {
             </Text>
             <Text style={{ fontWeight: '700' }}>${total}</Text>
           </View>
-          <TouchableOpacity style={styles.placeOrderBtn}>
+          <TouchableOpacity
+            style={styles.placeOrderBtn}
+            onPress={() =>
+              navigation.navigate('Tracking', {
+                profile,
+                total,
+                paymentMethod: 'Cash',
+              })
+            }
+          >
             <Text style={styles.placeOrderText}>Place order</Text>
           </TouchableOpacity>
         </View>
