@@ -32,7 +32,7 @@ export default function ServiceDetailsScreen({ route, navigation }) {
       name: 'Face',
       selected: false,
       productPrice: 300,
-      servicePrice: 400,
+      servicePrice: 100,
       productQty: 1,
       serviceQty: 1,
     },
@@ -41,7 +41,7 @@ export default function ServiceDetailsScreen({ route, navigation }) {
       name: 'Hand',
       selected: false,
       productPrice: 300,
-      servicePrice: 400,
+      servicePrice: 100,
       productQty: 1,
       serviceQty: 1,
     },
@@ -50,7 +50,7 @@ export default function ServiceDetailsScreen({ route, navigation }) {
       name: 'Fullbody',
       selected: false,
       productPrice: 250,
-      servicePrice: 300,
+      servicePrice: 100,
       productQty: 1,
       serviceQty: 1,
     },
@@ -213,7 +213,7 @@ export default function ServiceDetailsScreen({ route, navigation }) {
   const calculateTotal = () => {
     // Base product and service prices
     const productTotal = service.price * productQuantity;
-    const serviceTotal = (service.price + 50) * serviceQuantity;
+    const serviceTotal = 100 * serviceQuantity;
 
     // Add variations
     let variationsTotal = 0;
@@ -349,9 +349,7 @@ export default function ServiceDetailsScreen({ route, navigation }) {
               <Text style={styles.priceLabel}>Services</Text>
               <View style={styles.priceControl}>
                 <View style={styles.priceValues}>
-                  <Text style={styles.originalPrice}>
-                    ${service.price + 50}
-                  </Text>
+                  <Text style={styles.originalPrice}>${100}</Text>
                   <Text style={styles.discountedPrice}>
                     ${service.price + 70}
                   </Text>

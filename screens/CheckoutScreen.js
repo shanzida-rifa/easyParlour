@@ -20,7 +20,7 @@ export default function CheckoutScreen({ navigation }) {
 
   const [quantity, setQuantity] = useState(service?.quantity || 1);
 
-  const increaseQty = () => setQuantity(prev => prev + 1);
+  const increaseQty = () => setQuantity(prev => prev);
   const decreaseQty = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
 
   // Calculate prices properly
