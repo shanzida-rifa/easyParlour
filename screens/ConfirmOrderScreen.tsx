@@ -6,14 +6,38 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchBar from '../components/SearchBar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+// Define type for service object
+type Service = {
+  id: string;
+  name: string;
+  productPrice: number;
+  serviceCharge: number;
+};
+
+// Define type for route params
+type ConfirmOrderRouteParams = {
+  profile: {
+    name: string;
+    address?: string;
+    phone?: string;
+  };
+  service: Service;
+  subtotal: number;
+  platformFee: number;
+  vatTax: number;
+  deliveryFee: number;
+  total: number;
+};
+
 export default function ConfirmOrderScreen() {
-  const route = useRoute();
-  const navigation = useNavigation();
+  const route =
+    useRoute<RouteProp<{ params: ConfirmOrderRouteParams }, 'params'>>();
+  const navigation = useNavigation<any>();
 
   // Receive checkout data
   const {
@@ -35,6 +59,7 @@ export default function ConfirmOrderScreen() {
             <Ionicons name="arrow-back" size={24} color="#000" />
           </TouchableOpacity>
           <Text style={styles.title}>Confirm & Place Order</Text>
+          <View style={{ width: 24 }} />
         </View>
 
         {/* Search Bar */}
@@ -119,6 +144,11 @@ const styles = StyleSheet.create({
   section: { margin: 12, padding: 12, backgroundColor: '#fdfdfd' },
   sectionTitle: { fontWeight: '700', marginBottom: 8 },
   changeBtn: { color: 'blue', fontWeight: '600' },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   paymentBox: {
     borderWidth: 1,
     borderColor: '#ccc',

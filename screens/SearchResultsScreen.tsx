@@ -4,19 +4,47 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  ScrollView,
   TextInput,
   FlatList,
   Image,
+  ImageSourcePropType,
 } from 'react-native';
+import { Alert } from 'react-native';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-// Sample data for search results
-const searchResultsData = [
+// --- Types ---
+type RootStackParamList = {
+  SearchResults: { query?: string };
+  ParlourProfile: { parlour: SearchResult };
+};
+
+type SearchResultsNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'SearchResults'
+>;
+
+type SearchResultsRouteProp = RouteProp<RootStackParamList, 'SearchResults'>;
+
+type SearchResult = {
+  id: string;
+  title: string;
+  badge?: string | null;
+  services: string;
+  address: string;
+  details: string;
+  rating: number;
+  reviews: string;
+  image: ImageSourcePropType;
+};
+
+// --- Sample Data ---
+const searchResultsData: SearchResult[] = [
   {
     id: '1',
     title: 'ABC Beauty Parlour',
@@ -52,35 +80,34 @@ const searchResultsData = [
   },
 ];
 
-export default function SearchResultsScreen({ route }) {
-  const navigation = useNavigation();
+// --- Component ---
+const SearchResultsScreen: React.FC = () => {
+  const navigation = useNavigation<SearchResultsNavigationProp>();
+  const route = useRoute<SearchResultsRouteProp>();
+
   const [searchQuery, setSearchQuery] = useState(route.params?.query || '');
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
-  const [favorites, setFavorites] = useState({});
+  const [favorites, setFavorites] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    if (searchQuery) {
-      performSearch(searchQuery);
-    }
+    if (searchQuery) performSearch(searchQuery);
   }, [searchQuery]);
 
-  const toggleFavorite = id => {
+  const toggleFavorite = (id: string) => {
     setFavorites(prev => ({
       ...prev,
       [id]: !prev[id],
     }));
   };
 
-  const shareBusiness = business => {
-    // In a real app, this would use the Share API
-    alert(`Sharing ${business.title}`);
+  const shareBusiness = (business: SearchResult) => {
+    Alert.alert(`Sharing ${business.title}`);
   };
-  const performSearch = query => {
+
+  const performSearch = (query: string) => {
     setLoading(true);
-    // Simulate API call delay
     setTimeout(() => {
-      // Filter results based on query (in a real app, this would be an API call)
       const filteredResults = searchResultsData.filter(
         item =>
           item.services.toLowerCase().includes(query.toLowerCase()) ||
@@ -92,89 +119,18 @@ export default function SearchResultsScreen({ route }) {
   };
 
   const handleSearchSubmit = () => {
-    if (searchQuery.trim()) {
-      performSearch(searchQuery);
-    }
+    if (searchQuery.trim()) performSearch(searchQuery);
   };
 
-  // const renderSearchItem = ({ item }) => (
-  //   <View style={styles.resultItem}>
-  //     {/* Image with rating and favorite icon overlay */}
-  //     <View style={styles.imageContainer}>
-  //       <Image source={item.image} style={styles.resultImage} />
-
-  //       {/* Rating badge in top left */}
-  //       <View style={styles.ratingBadge}>
-  //         <FontAwesome name="star" size={12} color="#FFD700" />
-  //         <Text style={styles.ratingText}>
-  //           {' '}
-  //           {item.rating} ({item.reviews})
-  //         </Text>
-  //       </View>
-
-  //       {/* Favorite heart in top right */}
-  //       <TouchableOpacity
-  //         style={styles.favoriteButton}
-  //         onPress={() => toggleFavorite(item.id)}
-  //       >
-  //         <Icon
-  //           name={favorites[item.id] ? 'heart' : 'heart-outline'}
-  //           size={24}
-  //           color={favorites[item.id] ? '#E91E63' : '#fff'}
-  //         />
-  //       </TouchableOpacity>
-  //     </View>
-
-  //     {/* Content below the image */}
-  //     <View style={styles.resultContent}>
-  //       <Text style={styles.title}>{item.title}</Text>
-
-  //       {item.badge && <Text style={styles.badge}>{item.badge}</Text>}
-
-  //       <Text style={styles.services}>{item.services}</Text>
-  //       {/* Share button in top right */}
-  //       <TouchableOpacity
-  //         style={styles.shareButton}
-  //         onPress={() => shareBusiness(item)}
-  //       >
-  //         <Icon name="share-social-outline" size={20} color="#555" />
-  //       </TouchableOpacity>
-  //       {/* Horizontal line */}
-  //       <View style={styles.divider} />
-  //       {/* Address with location icon */}
-  //       <View style={styles.detailRow}>
-  //         <MaterialIcons name="location-on" size={14} color="#666" />
-  //         <Text style={styles.address}> {item.address}</Text>
-  //       </View>
-
-  //       {/* Details with clock icon */}
-  //       <View style={styles.detailRow}>
-  //         <Icon name="time-outline" size={14} color="#666" />
-  //         <Text style={styles.details}> {item.details}</Text>
-  //       </View>
-
-  //       {/* Rating at the bottom */}
-  //       {/* <View style={styles.ratingContainerBottom}>
-  //         <Text style={styles.ratingText}>
-  //           {item.rating} ({item.reviews})
-  //         </Text>
-  //       </View> */}
-  //     </View>
-  //   </View>
-  // );
-
-  // Inside renderSearchItem
-  const renderSearchItem = ({ item }) => (
+  const renderSearchItem = ({ item }: { item: SearchResult }) => (
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={() => navigation.navigate('ParlourProfile', { parlour: item })}
     >
       <View style={styles.resultItem}>
-        {/* Image with rating and favorite icon overlay */}
         <View style={styles.imageContainer}>
           <Image source={item.image} style={styles.resultImage} />
 
-          {/* Rating badge */}
           <View style={styles.ratingBadge}>
             <FontAwesome name="star" size={12} color="#FFD700" />
             <Text style={styles.ratingText}>
@@ -182,7 +138,6 @@ export default function SearchResultsScreen({ route }) {
             </Text>
           </View>
 
-          {/* Favorite heart */}
           <TouchableOpacity
             style={styles.favoriteButton}
             onPress={() => toggleFavorite(item.id)}
@@ -195,7 +150,6 @@ export default function SearchResultsScreen({ route }) {
           </TouchableOpacity>
         </View>
 
-        {/* Content */}
         <View style={styles.resultContent}>
           <Text style={styles.title}>{item.title}</Text>
           {item.badge && <Text style={styles.badge}>{item.badge}</Text>}
@@ -226,7 +180,6 @@ export default function SearchResultsScreen({ route }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Search Header */}
       <View style={styles.searchHeader}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back" size={24} color="#000" />
@@ -244,18 +197,16 @@ export default function SearchResultsScreen({ route }) {
             value={searchQuery}
             onChangeText={setSearchQuery}
             onSubmitEditing={handleSearchSubmit}
-            autoFocus={true}
+            autoFocus
           />
         </View>
       </View>
 
-      {/* Results Count */}
       <View style={styles.resultsCountContainer}>
         <Text style={styles.resultsCountText}>Results for "{searchQuery}"</Text>
         <Text style={styles.resultsCount}>{results.length} results</Text>
       </View>
 
-      {/* Results List */}
       {loading ? (
         <View style={styles.loadingContainer}>
           <Text style={styles.loadingText}>Loading...</Text>
@@ -271,14 +222,10 @@ export default function SearchResultsScreen({ route }) {
       )}
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-
+  container: { flex: 1, backgroundColor: '#fff' },
   searchHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -297,30 +244,16 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 12,
   },
-  searchIcon: {
-    marginRight: 8,
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 16,
-  },
+  searchIcon: { marginRight: 8 },
+  searchInput: { flex: 1, fontSize: 16 },
   resultsCountContainer: {
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
   },
-  resultsCountText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  resultsCount: {
-    fontSize: 14,
-    color: '#666',
-  },
-  resultsList: {
-    padding: 16,
-  },
+  resultsCountText: { fontSize: 18, fontWeight: 'bold', marginBottom: 4 },
+  resultsCount: { fontSize: 14, color: '#666' },
+  resultsList: { padding: 16 },
   resultItem: {
     marginBottom: 24,
     backgroundColor: '#fff',
@@ -331,9 +264,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  imageContainer: {
-    position: 'relative',
-  },
+  imageContainer: { position: 'relative' },
   resultImage: {
     width: '100%',
     height: 180,
@@ -356,7 +287,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 12,
     right: 12,
-    // backgroundColor: 'rgba(0, 0, 0, 0.4)',
     borderRadius: 20,
     padding: 6,
   },
@@ -364,69 +294,21 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 50,
     right: 12,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: 'rgba(0,0,0,0.4)',
     borderRadius: 20,
     padding: 6,
   },
-  resultContent: {
-    padding: 16,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  badge: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#E91E63',
-    marginBottom: 8,
-  },
-  services: {
-    fontSize: 14,
-    color: '#333',
-    marginBottom: 12,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: '#eee',
-    marginBottom: 12,
-  },
-  detailRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 6,
-  },
-  address: {
-    fontSize: 12,
-    color: '#666',
-  },
-  details: {
-    fontSize: 12,
-    color: '#666',
-  },
-  ratingContainerBottom: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#f8f8f8',
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    borderRadius: 4,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  ratingText: {
-    fontSize: 12,
-    color: '#666',
-    fontWeight: '500',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    fontSize: 16,
-    color: '#666',
-  },
+  resultContent: { padding: 16 },
+  title: { fontSize: 18, fontWeight: 'bold', marginBottom: 8 },
+  badge: { fontSize: 14, fontWeight: '600', color: '#E91E63', marginBottom: 8 },
+  services: { fontSize: 14, color: '#333', marginBottom: 12 },
+  divider: { height: 1, backgroundColor: '#eee', marginBottom: 12 },
+  detailRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 6 },
+  address: { fontSize: 12, color: '#666' },
+  details: { fontSize: 12, color: '#666' },
+  ratingText: { fontSize: 12, color: '#666', fontWeight: '500' },
+  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  loadingText: { fontSize: 16, color: '#666' },
 });
+
+export default SearchResultsScreen;

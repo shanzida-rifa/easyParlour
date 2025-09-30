@@ -8,27 +8,67 @@ import {
   TouchableOpacity,
   FlatList,
   Dimensions,
+  ImageSourcePropType,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchBar from '../components/SearchBar';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RouteProp } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
-export default function ParlourProfileScreen({ route, navigation }) {
-  const { parlour } = route.params;
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState('Facial');
-  const [cart, setCart] = useState([]);
+// --- Types ---
+type RootStackParamList = {
+  ParlourProfile: { parlour: Parlour };
+  ServiceDetails: { service: Service; parlour: Parlour };
+};
 
-  const images = [
+type ParlourProfileNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'ParlourProfile'
+>;
+
+type ParlourProfileRouteProp = RouteProp<RootStackParamList, 'ParlourProfile'>;
+
+type Parlour = {
+  id: string;
+  title: string;
+  badge?: string | null;
+  services: string;
+  address: string;
+  details: string;
+  rating: number;
+  reviews: string;
+  image: ImageSourcePropType;
+};
+
+type Service = {
+  id: string;
+  name: string;
+  price: number;
+  image: ImageSourcePropType;
+};
+
+type Props = {
+  route: ParlourProfileRouteProp;
+  navigation: ParlourProfileNavigationProp;
+};
+
+const ParlourProfileScreen: React.FC<Props> = ({ route, navigation }) => {
+  const { parlour } = route.params;
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [selectedCategory, setSelectedCategory] = useState<string>('Facial');
+  const [cart, setCart] = useState<Service[]>([]);
+
+  const images: ImageSourcePropType[] = [
     parlour.image,
     require('../assets/images/salon2.jpeg'),
     require('../assets/images/salon3.jpeg'),
   ];
 
-  // Service categories
-  const categories = [
+  const categories: string[] = [
     'Wax5',
     'Wax6',
     'Haircutting',
@@ -37,8 +77,7 @@ export default function ParlourProfileScreen({ route, navigation }) {
     'Threading',
   ];
 
-  // Example services for each category
-  const categoryServices = {
+  const categoryServices: Record<string, Service[]> = {
     Wax5: [
       {
         id: 'w1',
@@ -143,8 +182,7 @@ export default function ParlourProfileScreen({ route, navigation }) {
     ],
   };
 
-  // Generic services (bottom section)
-  const services = [
+  const services: Service[] = [
     {
       id: '1',
       name: 'Haircut',
@@ -165,11 +203,16 @@ export default function ParlourProfileScreen({ route, navigation }) {
     },
   ];
 
-  const addToCart = service => {
+  const handleAddService = (service: Service) => {
     setCart([...cart, service]);
+    Alert.alert(
+      'Added to Cart',
+      `${service.name} has been added to your cart.`,
+    );
+    navigation.navigate('ServiceDetails', { service, parlour });
   };
 
-  const renderCategoryCard = ({ item }) => (
+  const renderCategoryCard = ({ item }: { item: Service }) => (
     <View style={styles.categoryCard}>
       <Image
         source={item.image}
@@ -180,19 +223,14 @@ export default function ParlourProfileScreen({ route, navigation }) {
       <Text style={styles.servicePrice}>${item.price}</Text>
       <TouchableOpacity
         style={styles.addButton}
-        onPress={() =>
-          navigation.navigate('ServiceDetails', {
-            service: item,
-            parlour: parlour,
-          })
-        }
+        onPress={() => handleAddService(item)}
       >
         <Text style={styles.addButtonText}>ADD</Text>
       </TouchableOpacity>
     </View>
   );
 
-  const renderService = ({ item }) => (
+  const renderService = ({ item }: { item: Service }) => (
     <View style={styles.serviceCard}>
       <Image source={item.image} style={styles.serviceImage} />
       <View style={{ flex: 1 }}>
@@ -201,12 +239,7 @@ export default function ParlourProfileScreen({ route, navigation }) {
       </View>
       <TouchableOpacity
         style={styles.addButton}
-        onPress={() =>
-          navigation.navigate('ServiceDetails', {
-            service: item,
-            parlour: parlour,
-          })
-        }
+        onPress={() => handleAddService(item)}
       >
         <Text style={styles.addButtonText}>ADD</Text>
       </TouchableOpacity>
@@ -226,7 +259,7 @@ export default function ParlourProfileScreen({ route, navigation }) {
 
       {/* Search Bar */}
       <SearchBar />
-      <View style={{ marginTop: 5 }}></View>
+      <View style={{ marginTop: 5 }} />
 
       <ScrollView>
         {/* Image Slider */}
@@ -337,7 +370,7 @@ export default function ParlourProfileScreen({ route, navigation }) {
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
@@ -363,53 +396,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#ccc',
     marginHorizontal: 4,
   },
-  activeDot: {
-    backgroundColor: '#000',
-  },
-  infoSection: {
-    flexDirection: 'row',
-    padding: 16,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 6,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 6,
-  },
-  ratingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 6,
-  },
-  ratingText: {
-    marginLeft: 6,
-    fontSize: 14,
-  },
-  address: {
-    fontSize: 13,
-    color: '#444',
-    marginBottom: 4,
-  },
-  details: {
-    fontSize: 12,
-    color: '#777',
-    marginBottom: 12,
-  },
+  activeDot: { backgroundColor: '#000' },
+  infoSection: { flexDirection: 'column', padding: 16 },
+  title: { fontSize: 20, fontWeight: 'bold', marginBottom: 6 },
+  subtitle: { fontSize: 14, color: '#666', marginBottom: 6 },
+  ratingRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 6 },
+  ratingText: { marginLeft: 6, fontSize: 14 },
+  address: { fontSize: 13, color: '#444', marginBottom: 4 },
+  details: { fontSize: 12, color: '#777', marginBottom: 12 },
   buttonRow: { flexDirection: 'row', marginBottom: 12 },
   iconButton: {
     flexDirection: 'column',
     alignItems: 'center',
     marginRight: 16,
   },
-  buttonText: {
-    marginLeft: 4,
-    fontSize: 14,
-  },
-
+  buttonText: { marginLeft: 4, fontSize: 14 },
   askButton: {
     borderWidth: 1,
     borderColor: '#777',
@@ -418,39 +419,17 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   askButtonText: { fontSize: 14 },
-
-  // Categories
-  categoryTabs: {
-    paddingHorizontal: 8,
-    marginVertical: 10,
-  },
-
+  categoryTabs: { paddingHorizontal: 8, marginVertical: 10 },
   categoryTab: {
     paddingVertical: 8,
     paddingHorizontal: 14,
-    // borderWidth: 1,
     borderColor: '#ccc',
-    // borderRadius: 20,
     marginRight: 10,
   },
-  activeCategory: {
-    // backgroundColor: '#000',
-    borderWidth: 2,
-    borderColor: '#000',
-  },
-  categoryText: {
-    fontSize: 14,
-    color: '#000',
-  },
-  activeCategoryText: {
-    color: '#000',
-  },
-
-  categoryList: {
-    paddingHorizontal: 10,
-    paddingBottom: 20,
-  },
-
+  activeCategory: { borderWidth: 2, borderColor: '#000' },
+  categoryText: { fontSize: 14, color: '#000' },
+  activeCategoryText: { color: '#000' },
+  categoryList: { paddingHorizontal: 10, paddingBottom: 20 },
   categoryCard: {
     flex: 1,
     margin: 6,
@@ -460,14 +439,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexWrap: 'wrap',
   },
-  categoryImage: {
-    width: 70,
-    height: 70,
-    borderRadius: 8,
-    marginBottom: 6,
-  },
-
-  // Services bottom
+  categoryImage: { width: 70, height: 70, borderRadius: 8, marginBottom: 6 },
   services: { padding: 16 },
   servicesTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 12 },
   serviceCard: {
@@ -490,3 +462,5 @@ const styles = StyleSheet.create({
   },
   addButtonText: { color: '#fff' },
 });
+
+export default ParlourProfileScreen;

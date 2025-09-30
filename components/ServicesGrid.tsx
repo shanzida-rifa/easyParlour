@@ -14,6 +14,10 @@ type Service = {
   empty?: boolean;
 };
 
+type ServicesGridProps = {
+  columns?: number; // make it optional, default 3
+};
+
 const services: Service[] = [
   { id: '1', name: 'Wax' },
   { id: '2', name: 'Facial' },
@@ -29,16 +33,15 @@ const services: Service[] = [
   { id: '12', name: 'Massage' },
 ];
 
-export default function ServicesGrid(): React.JSX.Element {
+const ServicesGrid: React.FC<ServicesGridProps> = ({ columns = 3 }) => {
   const [showAll, setShowAll] = useState(false);
 
   // Show first 9 items when collapsed
   const visibleServices = showAll ? services : services.slice(0, 9);
 
-  // Pad for even 3-column rows
-  const numColumns = 3;
+  // Pad for even rows
   const paddedServices: Service[] = [...visibleServices];
-  while (paddedServices.length % numColumns !== 0) {
+  while (paddedServices.length % columns !== 0) {
     paddedServices.push({
       id: `empty-${paddedServices.length}`,
       empty: true,
@@ -59,8 +62,8 @@ export default function ServicesGrid(): React.JSX.Element {
       <FlatList
         data={paddedServices}
         keyExtractor={item => item.id}
-        numColumns={numColumns}
-        scrollEnabled={false} // disable scroll, take only content height
+        numColumns={columns}
+        scrollEnabled={false} // disable scroll
         renderItem={renderItem}
       />
 
@@ -77,7 +80,7 @@ export default function ServicesGrid(): React.JSX.Element {
       )}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   box: {
@@ -102,3 +105,5 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
   },
 });
+
+export default ServicesGrid;

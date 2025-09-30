@@ -10,20 +10,40 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 import SearchBar from '../components/SearchBar';
 
-export default function UserProfileScreen({ navigation }) {
+// Define the type of your navigation stack
+type RootStackParamList = {
+  Login: undefined;
+  VerifyProfile: undefined;
+  MyRating: undefined;
+  Rewards: undefined;
+  // Add other screens if needed
+};
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
+const UserProfileScreen: React.FC = () => {
+  const navigation = useNavigation<NavigationProp>();
+
   const handleLogout = () => {
     navigation.replace('Login'); // navigate to login and clear stack
   };
+  type MenuItem = {
+    id: number;
+    label: string;
+    route?: keyof RootStackParamList; // only allow defined screens
+  };
 
-  const menuItems = [
+  const menuItems: MenuItem[] = [
     { id: 1, label: 'My Plan' },
     { id: 2, label: 'My Interest' },
     { id: 3, label: 'Plus membership' },
     { id: 4, label: 'My rating', route: 'MyRating' },
     { id: 5, label: 'Manage addresses' },
-    { id: 6, label: 'Verified profile' },
+    { id: 6, label: 'Verified profile', route: 'VerifyProfile' },
     { id: 7, label: 'Messages' },
     { id: 8, label: 'Rewards', route: 'Rewards' },
     { id: 9, label: 'Referral' },
@@ -119,7 +139,7 @@ export default function UserProfileScreen({ navigation }) {
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
@@ -163,7 +183,6 @@ const styles = StyleSheet.create({
     marginTop: 6,
     alignItems: 'center',
   },
-
   verifiedBtn: {
     borderWidth: 1,
     borderColor: '#aaa',
@@ -198,3 +217,5 @@ const styles = StyleSheet.create({
   },
   logoutText: { fontSize: 16, color: '#333', fontWeight: '600' },
 });
+
+export default UserProfileScreen;

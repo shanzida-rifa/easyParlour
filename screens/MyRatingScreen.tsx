@@ -1,4 +1,3 @@
-// screens/MyRatingScreen.js
 import React from 'react';
 import {
   View,
@@ -9,8 +8,20 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 
-export default function MyRatingScreen({ navigation }) {
+// Define the type of your navigation stack
+type RootStackParamList = {
+  MyRating: undefined;
+  // Add other screens if needed
+};
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'MyRating'>;
+
+const MyRatingScreen: React.FC = () => {
+  const navigation = useNavigation<NavigationProp>();
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Top Bar */}
@@ -56,7 +67,7 @@ export default function MyRatingScreen({ navigation }) {
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
@@ -97,3 +108,5 @@ const styles = StyleSheet.create({
   reviewText: { fontSize: 14, color: '#555', marginVertical: 6 },
   time: { fontSize: 12, color: '#999' },
 });
+
+export default MyRatingScreen;

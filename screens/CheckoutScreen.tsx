@@ -7,20 +7,72 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import {
+  useRoute,
+  useNavigation,
+  RouteProp,
+  NavigationProp,
+} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchBar from '../components/SearchBar';
 import { useCart } from '../components/CartContext';
 
-export default function CheckoutScreen({ navigation }) {
-  const { cartItems } = useCart();
-  const route = useRoute();
+// ---- Types ----
+type Variation = {
+  name: string;
+  price: number;
+};
+
+type Addon = {
+  name: string;
+  price: number;
+};
+
+type Service = {
+  name: string;
+  productPrice?: number;
+  serviceCharge?: number;
+  quantity?: number;
+  variations?: Variation[];
+  addons?: Addon[];
+};
+
+type Profile = {
+  name?: string;
+  address?: string;
+  phone?: string;
+};
+
+type RootStackParamList = {
+  Checkout: { profile?: Profile; service?: Service };
+  ConfirmOrder: {
+    profile?: Profile;
+    service?: Service;
+    subtotal: number;
+    platformFee: number;
+    vatTax: number;
+    deliveryFee: number;
+    total: number;
+  };
+};
+
+type CheckoutScreenRouteProp = RouteProp<RootStackParamList, 'Checkout'>;
+type CheckoutScreenNavigationProp = NavigationProp<
+  RootStackParamList,
+  'Checkout'
+>;
+
+export default function CheckoutScreen() {
+  const {} = useCart();
+  const route = useRoute<CheckoutScreenRouteProp>();
+  const navigation = useNavigation<CheckoutScreenNavigationProp>();
+
   const { profile, service } = route.params || {};
 
-  const [quantity, setQuantity] = useState(service?.quantity || 1);
+  const [quantity, setQuantity] = useState<number>(service?.quantity || 1);
 
-  const increaseQty = () => setQuantity(prev => prev);
+  const increaseQty = () => setQuantity(prev => prev + 1);
   const decreaseQty = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
 
   // Calculate prices properly
@@ -28,8 +80,8 @@ export default function CheckoutScreen({ navigation }) {
   const serviceCharge = service?.serviceCharge || 0;
 
   // variations and addons (default empty array if not passed)
-  const variations = service?.variations || [];
-  const addons = service?.addons || [];
+  const variations: Variation[] = service?.variations || [];
+  const addons: Addon[] = service?.addons || [];
 
   // sum their prices
   const variationsTotal = variations.reduce(
@@ -214,6 +266,7 @@ export default function CheckoutScreen({ navigation }) {
   );
 }
 
+// ---- Styles ----
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   topBar: {

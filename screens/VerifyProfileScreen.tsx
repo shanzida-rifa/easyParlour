@@ -9,12 +9,24 @@ import {
   Image,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import SearchBar from '../components/SearchBar'; // adjust path if needed
-import { useNavigation } from '@react-navigation/native';
+import SearchBar from '../components/SearchBar';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 
-export default function VerifyProfileScreen() {
-  const navigation = useNavigation();
+// Define navigation stack type
+type RootStackParamList = {
+  VerifyProfile: undefined;
+  // Add other screens if needed
+};
+
+type NavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'VerifyProfile'
+>;
+
+const VerifyProfileScreen: React.FC = () => {
+  const navigation = useNavigation<NavigationProp>();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -159,7 +171,7 @@ export default function VerifyProfileScreen() {
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   topBar: {
@@ -249,3 +261,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee',
   },
 });
+
+export default VerifyProfileScreen;

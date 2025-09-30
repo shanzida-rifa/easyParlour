@@ -1,4 +1,3 @@
-// screens/RewardsScreen.js
 import React from 'react';
 import {
   View,
@@ -9,8 +8,20 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 
-export default function RewardsScreen({ navigation }) {
+// Define your navigation stack type
+type RootStackParamList = {
+  Rewards: undefined;
+  // Add other screens if needed
+};
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Rewards'>;
+
+const RewardsScreen: React.FC = () => {
+  const navigation = useNavigation<NavigationProp>();
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Top Bar */}
@@ -70,7 +81,7 @@ export default function RewardsScreen({ navigation }) {
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
@@ -124,3 +135,5 @@ const styles = StyleSheet.create({
     borderColor: '#eee',
   },
 });
+
+export default RewardsScreen;
