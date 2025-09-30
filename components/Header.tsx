@@ -1,17 +1,21 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
+import {
+  useNavigation,
+  NavigationProp,
+  ParamListBase,
+} from '@react-navigation/native';
 
 export default function Header() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<ParamListBase>>();
 
   return (
     <View style={styles.header}>
       {/* Left menu button */}
       <TouchableOpacity>
-        <Icon name="menu" size={24} color="black" />
+        <Feather name="menu" size={24} color="black" />
       </TouchableOpacity>
 
       {/* Title */}
@@ -28,11 +32,6 @@ export default function Header() {
             style={styles.icon}
           />
         </TouchableOpacity>
-
-        {/* People */}
-        {/* <TouchableOpacity>
-          <Ionicons name="people-outline" size={22} style={styles.icon} />
-        </TouchableOpacity> */}
 
         {/* Notifications */}
         <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>

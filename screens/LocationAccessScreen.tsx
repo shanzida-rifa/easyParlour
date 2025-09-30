@@ -1,7 +1,20 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-export default function LocationAccessScreen({ navigation }) {
+// define your navigator types
+type RootStackParamList = {
+  LocationAccess: undefined;
+  Home: undefined;
+};
+
+type LocationAccessScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'LocationAccess'>;
+};
+
+export default function LocationAccessScreen({
+  navigation,
+}: LocationAccessScreenProps) {
   const handleAllowLocation = () => {
     const mockLocation = {
       latitude: 37.78825,
@@ -60,7 +73,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: -60, // shift up slightly since we have header
+    marginTop: -60,
   },
   logo: {
     width: 150,

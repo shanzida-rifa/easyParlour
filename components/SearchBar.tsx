@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {
+  useNavigation,
+  NavigationProp,
+  ParamListBase,
+} from '@react-navigation/native';
 
 export default function SearchBar() {
-  const [query, setQuery] = useState('');
-  const navigation = useNavigation();
+  const [query, setQuery] = useState<string>('');
+  const navigation = useNavigation<NavigationProp<ParamListBase>>();
 
   const handleSubmit = () => {
     if (query.trim()) {
@@ -15,13 +19,14 @@ export default function SearchBar() {
 
   return (
     <View style={styles.container}>
-      <Icon name="search-outline" size={20} color="#777" />
+      <Ionicons name="search-outline" size={20} color="#777" />
       <TextInput
         placeholder="Search"
         style={styles.input}
         value={query}
         onChangeText={setQuery}
         onSubmitEditing={handleSubmit}
+        returnKeyType="search"
       />
     </View>
   );

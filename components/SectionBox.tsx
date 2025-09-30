@@ -10,7 +10,13 @@ import {
 
 const { width } = Dimensions.get('window');
 
-export default function SectionBox({ images = [], onPress }) {
+// Define props interface
+interface SectionBoxProps {
+  images?: string[];
+  onPress?: (index: number) => void;
+}
+
+export default function SectionBox({ images = [], onPress }: SectionBoxProps) {
   return (
     <View style={styles.container}>
       <ScrollView

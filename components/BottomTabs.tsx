@@ -1,8 +1,15 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import {
+  useNavigation,
+  useRoute,
+  NavigationProp,
+  ParamListBase,
+  RouteProp,
+} from '@react-navigation/native';
 
+// Define your tab items
 const tabs = [
   { id: 'Home', label: 'Home', icon: 'home' },
   { id: 'Bookings', label: 'Bookings', icon: 'calendar-outline' },
@@ -12,28 +19,29 @@ const tabs = [
 ];
 
 export default function BottomTabs() {
-  const navigation = useNavigation();
-  const route = useRoute(); // current active screen
+  // Use typed navigation
+  const navigation = useNavigation<NavigationProp<ParamListBase>>();
+  const route = useRoute<RouteProp<ParamListBase, string>>();
 
   return (
     <View style={styles.container}>
-      {tabs.map(t => {
-        const isActive = route.name === t.id; // check route
+      {tabs.map(tab => {
+        const isActive = route.name === tab.id;
         return (
           <TouchableOpacity
-            key={t.id}
-            onPress={() => navigation.navigate(t.id)}
+            key={tab.id}
+            onPress={() => navigation.navigate(tab.id)}
             style={styles.tab}
           >
             <Ionicons
-              name={t.icon}
+              name={tab.icon as any} // Ionicons type fix
               size={22}
-              color={isActive ? 'black' : 'gray'} // ✅ use route.name
+              color={isActive ? 'black' : 'gray'}
             />
             <Text
               style={[styles.label, { color: isActive ? 'black' : 'gray' }]}
             >
-              {t.label}
+              {tab.label}
             </Text>
           </TouchableOpacity>
         );

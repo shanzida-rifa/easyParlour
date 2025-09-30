@@ -9,16 +9,28 @@ import {
   Alert,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import CheckBox from '@react-native-community/checkbox';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RouteProp } from '@react-navigation/native';
 
-export default function LoginScreen({ navigation }) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+// ✅ Define your navigation stack routes
+type RootStackParamList = {
+  Login: undefined;
+  LocationAccess: undefined;
+  Signup: undefined;
+};
 
-  const [rememberMe, setRememberMe] = useState(false);
+// ✅ Define props for this screen
+type LoginScreenProps = {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>;
+  route: RouteProp<RootStackParamList, 'Login'>;
+};
+
+export default function LoginScreen({ navigation }: LoginScreenProps) {
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
 
   const validUsername = 'easy123'; // hardcoded username
-
   const validPassword = '12345'; // hardcoded password
 
   const handleLogin = () => {
@@ -40,8 +52,6 @@ export default function LoginScreen({ navigation }) {
         style={styles.logo}
         resizeMode="contain"
       />
-      {/* <Text style={styles.title}>EASY PARLOUR</Text>
-      <Text style={styles.subtitle}>Parlour at your any Location</Text> */}
 
       {/* Box */}
       <View style={styles.box}>
@@ -166,7 +176,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#fff',
   },
-  logo: { width: 150, height: 150, marginBottom: 10 }, // increased size
+  logo: { width: 150, height: 150, marginBottom: 10 },
   title: { fontSize: 22, fontWeight: 'bold', marginTop: 6 },
   subtitle: { fontSize: 14, color: 'gray', marginBottom: 20 },
   box: {
@@ -189,7 +199,6 @@ const styles = StyleSheet.create({
     height: 45,
     width: '100%',
     marginBottom: 12,
-    color: 'black',
   },
   input: { flex: 1 },
 
@@ -216,7 +225,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
     alignItems: 'center',
   },
-  rememberRow: { flexDirection: 'row', alignItems: 'center' },
   bottomText: { flexDirection: 'row', marginTop: 20 },
   loginBtn: {
     marginTop: 20,

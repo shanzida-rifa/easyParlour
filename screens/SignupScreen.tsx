@@ -8,10 +8,25 @@ import {
   TextInput,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RouteProp } from '@react-navigation/native';
 
-export default function SignupScreen({ navigation }) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+// ✅ Define your stack param list
+type RootStackParamList = {
+  Signup: undefined;
+  Login: undefined;
+  Home: undefined;
+};
+
+// ✅ Props type for this screen
+type SignupScreenProps = {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'Signup'>;
+  route: RouteProp<RootStackParamList, 'Signup'>;
+};
+
+export default function SignupScreen({ navigation }: SignupScreenProps) {
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   return (
     <View style={styles.container}>
@@ -21,8 +36,6 @@ export default function SignupScreen({ navigation }) {
         style={styles.logo}
         resizeMode="contain"
       />
-      {/* <Text style={styles.title}>EASY PARLOUR</Text>
-      <Text style={styles.subtitle}>Parlour at your any Location</Text> */}
 
       {/* Box */}
       <View style={styles.box}>
@@ -43,6 +56,7 @@ export default function SignupScreen({ navigation }) {
             onChangeText={setUsername}
           />
         </View>
+
         {/* Password */}
         <View style={styles.inputRow}>
           <Ionicons
@@ -59,6 +73,8 @@ export default function SignupScreen({ navigation }) {
             secureTextEntry
           />
         </View>
+
+        {/* Signup button */}
         <TouchableOpacity
           style={styles.signupBtn}
           onPress={() => navigation.replace('Home')}
@@ -67,12 +83,12 @@ export default function SignupScreen({ navigation }) {
         </TouchableOpacity>
 
         {/* Divider line */}
-
         <View style={styles.divider}>
           <View style={styles.line} />
           <Text style={styles.dividerText}>OR</Text>
           <View style={styles.line} />
         </View>
+
         {/* Social Buttons */}
         <View style={styles.socialWrapper}>
           <TouchableOpacity style={styles.button}>
@@ -122,12 +138,6 @@ export default function SignupScreen({ navigation }) {
           <Text style={{ fontWeight: 'bold' }}>LOGIN</Text>
         </TouchableOpacity>
       </View>
-      {/* <TouchableOpacity
-        style={styles.signupBtn}
-        onPress={navigation.navigate('Home')}
-      >
-        <Text style={{ color: '#fff', fontWeight: 'bold' }}>LOGIN</Text>
-      </TouchableOpacity> */}
     </View>
   );
 }
@@ -207,7 +217,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   signupBtn: {
-    // marginTop: 0,
     backgroundColor: '#000',
     paddingHorizontal: 40,
     paddingVertical: 12,

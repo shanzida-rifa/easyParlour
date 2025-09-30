@@ -5,9 +5,16 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  ListRenderItemInfo,
 } from 'react-native';
 
-const services = [
+type Service = {
+  id: string;
+  name?: string;
+  empty?: boolean;
+};
+
+const services: Service[] = [
   { id: '1', name: 'Wax' },
   { id: '2', name: 'Facial' },
   { id: '3', name: 'Haircutting' },
@@ -22,17 +29,30 @@ const services = [
   { id: '12', name: 'Massage' },
 ];
 
-export default function ServicesGrid() {
+export default function ServicesGrid(): React.JSX.Element {
   const [showAll, setShowAll] = useState(false);
 
-  // show first 9 items when collapsed
+  // Show first 9 items when collapsed
   const visibleServices = showAll ? services : services.slice(0, 9);
-  // pad for even 3-column rows
+
+  // Pad for even 3-column rows
   const numColumns = 3;
-  const paddedServices = [...visibleServices];
+  const paddedServices: Service[] = [...visibleServices];
   while (paddedServices.length % numColumns !== 0) {
-    paddedServices.push({ id: `empty-${paddedServices.length}`, empty: true });
+    paddedServices.push({
+      id: `empty-${paddedServices.length}`,
+      empty: true,
+    });
   }
+
+  const renderItem = ({ item }: ListRenderItemInfo<Service>) =>
+    item.empty ? (
+      <View style={[styles.box, styles.invisibleBox]} />
+    ) : (
+      <TouchableOpacity style={styles.box}>
+        <Text>{item.name}</Text>
+      </TouchableOpacity>
+    );
 
   return (
     <View style={{ paddingHorizontal: 16 }}>
@@ -41,15 +61,7 @@ export default function ServicesGrid() {
         keyExtractor={item => item.id}
         numColumns={numColumns}
         scrollEnabled={false} // disable scroll, take only content height
-        renderItem={({ item }) =>
-          item.empty ? (
-            <View style={[styles.box, styles.invisibleBox]} />
-          ) : (
-            <TouchableOpacity style={styles.box}>
-              <Text>{item.name}</Text>
-            </TouchableOpacity>
-          )
-        }
+        renderItem={renderItem}
       />
 
       {/* Show button only if there are more than 9 items */}
@@ -76,6 +88,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
+  },
+  invisibleBox: {
+    backgroundColor: 'transparent',
   },
   viewAll: {
     alignSelf: 'center',
