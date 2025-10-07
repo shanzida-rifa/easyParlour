@@ -93,7 +93,7 @@ export default function CheckoutScreen() {
   const subtotal =
     productPrice * quantity + serviceCharge + variationsTotal + addonsTotal;
   const platformFee = 5;
-  const vatTax = 10;
+  const vatTax = 5;
   const deliveryFee = 5;
   const total = subtotal + platformFee + vatTax + deliveryFee;
 

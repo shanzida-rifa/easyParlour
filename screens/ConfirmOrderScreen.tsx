@@ -59,7 +59,7 @@ export default function ConfirmOrderScreen() {
             <Ionicons name="arrow-back" size={24} color="#000" />
           </TouchableOpacity>
           <Text style={styles.title}>Confirm & Place Order</Text>
-          <View style={{ width: 24 }} />
+          <View style={{ width: 23 }} />
         </View>
 
         {/* Search Bar */}
