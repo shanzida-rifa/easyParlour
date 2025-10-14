@@ -16,7 +16,11 @@ import ImageSlider from './components/ImageSlider';
 import ServicesGrid from './components/ServicesGrid';
 import SectionBox from './components/SectionBox';
 
-export default function ServiceExpandScreen() {
+const ServiceExpandScreen: React.FC = () => {
+  const handleSectionPress = (section: string, index: number) => {
+    console.log(`${section} pressed, image index:`, index);
+  };
+
   return (
     <ScrollView style={styles.container}>
       {/* Top Bar */}
@@ -76,7 +80,7 @@ export default function ServiceExpandScreen() {
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcdGJuRxUaEOPUgNL-xQln7wqR5y3EV1OWiA&s',
           'https://picsum.photos/400/200?random=2',
         ]}
-        onPress={index => console.log('Near Me pressed, image:', index)}
+        onPress={(index: number) => handleSectionPress('Near Me', index)}
       />
 
       <Text style={styles.heading}>Popular</Text>
@@ -86,7 +90,7 @@ export default function ServiceExpandScreen() {
           'https://content.jdmagicbox.com/comp/def_content/salons/default-salons-4.jpg',
           'https://images.pexels.com/photos/6954845/pexels-photo-6954845.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         ]}
-        onPress={index => console.log('Popular pressed, image:', index)}
+        onPress={(index: number) => handleSectionPress('Popular', index)}
       />
 
       <Text style={styles.heading}>Offers</Text>
@@ -96,11 +100,11 @@ export default function ServiceExpandScreen() {
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFo0gh_ZGUhLnUU_g5xV1oF1x2ZIYIclkKSA&s',
           'https://picsum.photos/400/200?random=6',
         ]}
-        onPress={index => console.log('Offers pressed, image:', index)}
+        onPress={(index: number) => handleSectionPress('Offers', index)}
       />
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
@@ -148,7 +152,7 @@ const styles = StyleSheet.create({
     color: '#555',
     marginTop: 2,
     flexWrap: 'wrap',
-    flexShrink: 1, // spacing between Name and Address
+    flexShrink: 1,
   },
 
   searchRow: {
@@ -171,3 +175,5 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
 });
+
+export default ServiceExpandScreen;
