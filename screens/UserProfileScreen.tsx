@@ -42,7 +42,8 @@ const UserProfileScreen: React.FC = () => {
     { id: 2, label: 'My Interest' },
     { id: 3, label: 'Plus membership' },
     { id: 4, label: 'My rating', route: 'MyRating' },
-    { id: 5, label: 'Manage addresses' },
+    { id: 5, label: 'Manage addresses', route: 'ManageAddresses' },
+
     { id: 6, label: 'Verified profile', route: 'VerifyProfile' },
     { id: 7, label: 'Messages' },
     { id: 8, label: 'Rewards', route: 'Rewards' },

@@ -25,6 +25,7 @@ import ServiceDetailsScreen from './screens/ServiceDetailsScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
 import ConfirmOrderScreen from './screens/ConfirmOrderScreen';
 import TrackingScreen from './screens/TrackingScreen';
+import ManageAddressesScreen from './screens/ManageAddressesScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -81,6 +82,10 @@ export default function App() {
           <Stack.Screen name="Rewards" component={RewardsScreen} />
           <Stack.Screen name="MyRating" component={MyRatingScreen} />
           <Stack.Screen name="Notifications" component={Notifications} />
+          <Stack.Screen
+            name="ManageAddresses"
+            component={withLayout(ManageAddressesScreen)}
+          />
           <Stack.Screen
             name="ServiceDetails"
             component={ServiceDetailsScreen}
