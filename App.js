@@ -26,6 +26,7 @@ import CheckoutScreen from './screens/CheckoutScreen';
 import ConfirmOrderScreen from './screens/ConfirmOrderScreen';
 import TrackingScreen from './screens/TrackingScreen';
 import ManageAddressesScreen from './screens/ManageAddressesScreen';
+import AddNewAddressScreen from './screens/AddNewAddressScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -72,7 +73,10 @@ export default function App() {
 
           {/* Other Screens */}
           <Stack.Screen name="ServiceExpand" component={ServiceExpandScreen} />
-          <Stack.Screen name="SearchResults" component={SearchResultsScreen} />
+          <Stack.Screen
+            name="SearchResults"
+            component={withLayout(SearchResultsScreen)}
+          />
           <Stack.Screen
             name="ParlourProfile"
             component={ParlourProfileScreen}
@@ -85,6 +89,10 @@ export default function App() {
           <Stack.Screen
             name="ManageAddresses"
             component={withLayout(ManageAddressesScreen)}
+          />
+          <Stack.Screen
+            name="AddNewAddress"
+            component={withLayout(AddNewAddressScreen)}
           />
           <Stack.Screen
             name="ServiceDetails"
