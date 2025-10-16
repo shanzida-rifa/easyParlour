@@ -16,7 +16,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 type RootStackParamList = {
-  ManageAddresses: undefined; // Add this line
+  ManageAddresses: undefined;
   AddNewAddress: undefined;
   EditAddress: { id: string };
 };
@@ -74,19 +74,19 @@ const ManageAddressesScreen = () => {
     );
   };
 
+  const handleEdit = () => {
+    navigation.navigate('AddNewAddress');
+  };
+
   const renderAddressItem = ({ item }: { item: Address }) => (
-    <TouchableOpacity
-      style={styles.addressCard}
-      activeOpacity={0.8}
-      onPress={() => navigation.navigate('AddNewAddress')}
-    >
+    <View style={styles.addressCard}>
       <View style={styles.row}>
         <View style={{ flex: 1 }}>
           <Text style={styles.name}>{item.name}</Text>
           <Text style={styles.phone}>{item.phone}</Text>
           <Text style={styles.address}>{item.address}</Text>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate('AddNewAddress')}>
+        <TouchableOpacity onPress={handleEdit}>
           <MaterialIcons name="edit" size={22} color="#007bff" />
         </TouchableOpacity>
         <TouchableOpacity
@@ -99,7 +99,7 @@ const ManageAddressesScreen = () => {
       <View style={styles.typeTag}>
         <Text style={styles.typeText}>{item.type}</Text>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 
   const filteredAddresses = addresses.filter(
